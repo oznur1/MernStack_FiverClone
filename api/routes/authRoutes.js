@@ -1,5 +1,6 @@
 
 import express, { Router } from "express";
+import { login, logout, register } from "../controllers/authControllers.js";
 
 
 
@@ -8,19 +9,13 @@ const router=express.Router();
 
 
 //Her route karsılık gelecek fonk belirle
-router.post("/register",(eq,res)=>{
- res.json({message:"kayıt işlemi"})
-})
+router.post("/register",register)
 
 
-router.post("login",(eq,res)=>{
- res.json({message:"giriş işlemi"})
-})
+router.post("login",login)
 
 
-router.post("/logout",(eq,res)=>{
- res.json({message:"cıkış işlemi"})
-})
+router.post("/logout",logout)
 
 
 //routerı dosya dışarısına cıkar

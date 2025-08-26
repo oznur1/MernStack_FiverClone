@@ -10,6 +10,16 @@ import authRoutes from "./routes/authRoutes.js";
 dotenv.config();
 
 
+//express uygulaması oluştur
+const app=express();
+
+
+
+//isteğin body'sini işle
+app.use(express.json())
+
+
+
 // MongoDB bağlantısı
 mongoose.connect(process.env.DATABASE_URL)
   .then(() => {
@@ -19,10 +29,6 @@ mongoose.connect(process.env.DATABASE_URL)
     console.error("❌ Veri tabanına bağlantı hatası:", err.message);
   });
 
-
-
-//express uygulaması oluştur
-const app=express();
 
 
 //routeları oluştur
