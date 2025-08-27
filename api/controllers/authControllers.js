@@ -1,6 +1,8 @@
 
 import User from "../models/userModels.js"
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
 
 
 //  Register (Kayıt Ol)
@@ -80,14 +82,29 @@ const login = async (req, res) => {
       return res.status(401).json({ message: "Yanlış şifre girdiniz" });
     }
 
-    // 4. Response için şifreyi kaldır
+    // 4. JWT token oluştur
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    // 5. Cookie’ye token koy
+    res.cookie("access_token", token, {
+      httpOnly: true,     // JS ile erişilemez (XSS'e karşı güvenli)
+      secure: process.env.NODE_ENV === "production", // prod’da sadece HTTPS
+      sameSite: "strict", // CSRF'e karşı koruma
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 gün
+    });
+
+    // 6. Response için şifreyi kaldır
     const userResponse = {
       _id: user._id,
       name: user.name,
       email: user.email,
     };
 
-    // 5. Client’a cevap gönder
+    // 7. Client’a cevap gönder
     return res.status(200).json({
       message: "Giriş başarılı",
       user: userResponse,
@@ -100,16 +117,23 @@ const login = async (req, res) => {
 
 
 
-
-
-
-
 // Logout.(Çıkış Yap)
 
 const logout=async(req,res)=>{
-  return  res.json({message:"cıkış işlemi"})
-}
+ try {
+    // Cookie’yi temizle
+    res.clearCookie("access_token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
 
+    return res.status(200).json({ message: "Çıkış başarılı" });
+  } catch (error) {
+    console.error("Logout Error:", error);
+    return res.status(500).json({ message: "Sunucu hatası" });
+  }
+};
 
 
 export{register,login,logout}

@@ -4,7 +4,8 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import authRoutes from "./routes/authRoutes.js";
-
+import cookieParser from "cookie-parser";
+import cors from "cors"
 
 // dotenv kurulumu
 dotenv.config();
@@ -19,6 +20,16 @@ const app=express();
 app.use(express.json())
 
 
+
+app.use(cookieParser());
+
+
+//cors hatalarını önüne geçmek için header ekle
+app.use(cors({
+  origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
+    credentials: true,
+}))
 
 // MongoDB bağlantısı
 mongoose.connect(process.env.DATABASE_URL)
