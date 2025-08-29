@@ -1,6 +1,8 @@
 import express from 'express';
 import protect from '../middlewares/protect.js';
-import { createGig, getAllGigs, getGig } from '../controller/gigController.js';
+import { createGig, getAllGigs, getGig } from '../controllers/gigController.js';
+
+
 
 
 
