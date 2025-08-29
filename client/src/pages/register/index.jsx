@@ -4,11 +4,15 @@ import Switch from '../../components/switch'
 import { useState } from 'react'
 import Button from '../../components/customButton'
 import api from '../../api'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 
 const Register = () => {
 
 const [isSeller,setIsSeller]=useState(false)
+
+const navigation=useNavigate()
 
  // Form gönderildiğinde çalışacak fonksiyon
   const handleSubmit = (e) => {
@@ -27,11 +31,20 @@ const [isSeller,setIsSeller]=useState(false)
     console.log(newUser);
 
     // Backend'e kayıt edilecek kullanıcıyı gönder
-   api.post("/auth/register",newUser)
-  .then ((res)=>alert("yeni kullanıcı kayıt edildi",res))
-  .catch((err)=>{
-    alert(err)
+ 
+api
+  .post("/auth/register", newUser, {
+    headers: { "Content-Type": "application/json" },
   })
+  .then((res) => {
+    toast.success("Yeni kullanıcı kayıt edildi");
+    navigate("/");
+  })
+  .catch((err) => {
+    alert(err);
+  });
+
+
   };
 
   return (

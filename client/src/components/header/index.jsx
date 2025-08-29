@@ -1,13 +1,16 @@
-import React from 'react'
-
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { IoSearch } from "react-icons/io5";
 import User from '../user';
 import Links from '../links';
+import { AuthContext } from '../../context/authContext';
+
+
 
 const Header = () => {
-    let user=User
-
+  
+  const {user}=useContext(AuthContext);
+  console.log("Header user:", user);
   return (
     <header className="p-5 shadow">
       <div className="max-w-[1440px] mx-auto flex justify-between items-center gap-4 md:gap-8">
@@ -32,9 +35,10 @@ const Header = () => {
         </form>
 
         {/* User */}
-         <div className="inline-flex items-center justify-center">
-          {user ? <User /> : <Links />}
-        </div>
+         
+      <div>
+        {!user ? <User/> :<Links/>}
+      </div>
       </div>
     </header>
   )

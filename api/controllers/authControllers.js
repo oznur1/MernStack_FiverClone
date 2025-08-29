@@ -102,6 +102,7 @@ const login = async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+        photo: user.photo|| null
     };
 
     // 7. Client’a cevap gönder

@@ -4,6 +4,7 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import authRoutes from "./routes/authRoutes.js";
+import gigRoutes from "./routes/gigRoutes.js"
 import cookieParser from "cookie-parser";
 import cors from "cors"
 
@@ -44,7 +45,7 @@ mongoose.connect(process.env.DATABASE_URL)
 
 //routeları oluştur
 app.use("/api/auth",authRoutes)
-
+app.use("/api/gig",gigRoutes)
 
 
 app.listen(process.env.PORT,()=>{
